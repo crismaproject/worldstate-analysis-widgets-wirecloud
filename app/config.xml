@@ -11,7 +11,7 @@
         <Name>crisma-worldstate-analysis-widgets-wirecloud</Name>
         <!-- Version: Current widget version number-->
         <!-- we include a build # to prevent caching by wirecloud -->
-        <Version>1.0.0.4</Version>
+        <Version>1.0.0.7</Version>
         <!-- DisplayName: Name shown in the UI of the widget -->
         <DisplayName>CRISMA Worldstate Analysis Widgets</DisplayName>
         <!-- Author: Widget developer(s) -->

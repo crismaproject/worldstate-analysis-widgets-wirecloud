@@ -384,40 +384,5 @@
         <!-- build:js({.tmp,app}) scripts/crisma-worldstate-analysis-widgets-wirecloud.min.js -->
         <script src="scripts/wire.js"></script>
         <!-- endbuild -->
-        <script type="text/javascript" >
-            MashupPlatform = {
-                prefs: {
-                    get: function (c) {
-                        var props = {
-                            'DEBUG': 'false',
-                            'CRISMA_DOMAIN': 'CRISMA',
-                            'CRISMA_ICMM_API': 'http://crisma.cismet.de/icmm_api',
-                        };
-                        return props[c];
-                    }
-                },
-                wiring: {
-                    registerCallback: function (name, func) {
-                        console.log("registerCallback: [name=" + name + "]");
-                        MashupPlatform[name] = func;
-                    },
-                    pushEvent: function (name, value) {
-                        console.log("pushEvent: [name=" + name + "|value=" + value + "]");
-                        try {
-                            MashupPlatform[name](value);
-                        } catch(e) {
-                            
-                        }
-                    }
-                }
-            };
-            
-    window.setTimeout(function() {
-                console.log("push ws");
-//                $.getJSON('http://crisma.cismet.de/pilotE/icmm_api/CRISMA.worldstates/3?omitNullValues=true&deduplicate=true', function (data) {
-                    MashupPlatform.wiring.pushEvent("setSelectedWorldstates", "[58,60,59]");
-//                })
-            }, 2000);
-        </script>
     </body>
 </html>

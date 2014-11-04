@@ -3,16 +3,33 @@
   "version": "1.0.0",
   "dependencies": {
     "angular": "1.2.25",
+    "angular-resource": "1.2.25",
+    "angular-local-storage": "0.0.5",
+    "angular-commons": "0.2.0",
     "json3": "3.2.6",
     "es5-shim": "2.1.0",
+    "jquery": "2.1.1",
+    "jquery-ui": "1.10.4",
+    "dynatree": "1.2.5",
+    "jquery-knob": "1.2.9",
+    "bootstrap": "3.3.0",
+    "ng-table": "0.3.3",
+    "angular-strap": "2.0.3",
     "worldstate-analysis-widgets": "1.0.7",
+    "crisma-worldstate-tree-widget-angular": "1.0.8",
+    "d3": "3.3.6",
+    "nvd3": "1.1.15-beta",
+    "angularjs-nvd3-directives": "0.0.7",
+    "ngDialog": "0.2.14",
+    "radar-chart-d3": "#d5944759c30f073f21c0860a1f71351d370149d8",
     "icmm_js": "0.1.5"
   },
   "devDependencies": {},
   "resolutions": {
     "angular": "1.2.25",
-    "d3": "3.3.6",
     "angular-resource": "1.2.25",
-    "bootstrap": "3.1.1"
+    "crisma-worldstate-tree-widget-angular": "1.0.8",
+    "bootstrap": "3.3.0",
+    "d3": "3.3.6"
   }
 }

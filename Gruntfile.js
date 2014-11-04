@@ -1,469 +1,861 @@
-// Generated on 2014-01-13 using generator-angular 0.7.1
-'use strict';
-
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+/*
+ * ===================================================================================================================
+ * ================================================ Grunt build file =================================================
+ * ===================================================================================================================
+ * ================================================  version 0.1.4   =================================================
+ * ===================================================================================================================
+ */
 module.exports = function (grunt) {
+    'use strict';
 
-  // Load grunt tasks automatically
-  require('load-grunt-tasks')(grunt);
+    var customCopy, directivesMainModuleName;
 
-  // Time how long tasks take. Can help when optimizing build times
-  require('time-grunt')(grunt);
+    /*
+     * ===========================================================================================================
+     * ============================================= CONFIGURATION ===============================================
+     * ===========================================================================================================
+     */
+    // TODO: find a way for more convenient configuration
+    directivesMainModuleName = '';
 
-  grunt.registerMultiTask('echoMessage', 'Echo message', function () {
-      grunt.log.writeln(grunt.log.wordlist([this.data], {color: 'yellow'}));
-  });
-  
-  // Define the configuration for all the tasks
-  grunt.initConfig({
-
-    // Project settings
-    yeoman: {
-      // configurable paths
-      app: require('./bower.json').appPath || 'app',
-      dist: 'dist'
-    },
-
-    // Watches files for changes and runs tasks based on the changed files
-    watch: {
-      js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
-        options: {
-          livereload: true
-        }
-      },
-      jsTest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'karma']
-      },
-      styles: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'autoprefixer']
-      },
-      gruntfile: {
-        files: ['Gruntfile.js']
-      },
-      livereload: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
-        files: [
-          '<%= yeoman.app %>/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-        ]
-      }
-    },
-
-    // The actual grunt server settings
-    connect: {
-      options: {
-        port: 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
-        livereload: 35729
-      },
-      livereload: {
-        options: {
-          open: true,
-          base: [
-            '.tmp',
-            '<%= yeoman.app %>'
-          ]
-        }
-      },
-      test: {
-        options: {
-          port: 9001,
-          base: [
-            '.tmp',
-            'test',
-            '<%= yeoman.app %>'
-          ]
-        }
-      },
-      dist: {
-        options: {
-          base: '<%= yeoman.dist %>'
-        }
-      }
-    },
-
-    // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
-      all: [
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
-      ]
-//      test: {
-//        options: {
-//          jshintrc: 'test/.jshintrc'
-//        },
-//        src: ['test/spec/{,*/}*.js']
-//      }
-    },
-
-    // Empties folders to start fresh
-    clean: {
-      dist: {
+    // registered in package task
+    customCopy = {
+        preserveTimestamp: true,
         files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*',
-            '*.wgt'
-          ]
-        }]
-      },
-      // cleans cdnified and test components
-      deploy: {
-          src: [
-              '<%= yeoman.dist %>/bower_components/angular',
-              '<%= yeoman.dist %>/bower_components/angular-resource',
-              '<%= yeoman.dist %>/bower_components/jquery',
-              '<%= yeoman.dist %>/bower_components/bootstrap'
-          ]
-      },
-      server: '.tmp'
-    },
-
-    // Add vendor prefixed styles
-    autoprefixer: {
-      options: {
-        browsers: ['last 1 version']
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
-        }]
-      }
-    },
-
-    // Automatically inject Bower components into the app
-    'bower-install': {
-      app: {
-        html: '<%= yeoman.app %>/index.html',
-        ignorePath: '<%= yeoman.app %>/'
-      }
-    },
-    
-    // Renames files for browser caching purposes
-    rev: {
-      dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/styles/fonts/*'
-          ]
-        }
-      }
-    },
-
-    // Reads HTML for usemin blocks to enable smart builds that automatically
-    // concat, minify and revision files. Creates configurations in memory so
-    // additional tasks can operate on them
-    useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
-      options: {
-        dest: '<%= yeoman.dist %>'
-      }
-    },
-
-    // Performs rewrites based on rev and the useminPrepare configuration
-    usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      options: {
-        assetsDirs: ['<%= yeoman.dist %>']
-      }
-    },
-
-    // The following *-min tasks produce minified files in the dist folder
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
-    htmlmin: {
-      dist: {
-        options: {
-          removeComments: true,
-          removeCommentsFromCDATA: true,
-          // https://github.com/yeoman/grunt-usemin/issues/44
-          collapseWhitespace: true,
-          collapseBooleanAttributes: true,
-          removeAttributeQuotes: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeOptionalTags: true
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/*.html'],
-          dest: '<%= yeoman.dist %>'
-        }]
-      }
-    },
-
-    // Allow the use of non-minsafe AngularJS files. Automatically makes it
-    // minsafe compatible so Uglify does not destroy the ng references
-    ngmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: '*.js',
-          dest: '.tmp/concat/scripts'
-        }]
-      }
-    },
-
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
-
-    // Copies remaining files to places other tasks can use
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
-            'bower_components/**/*',
-            'images/{,*/}*.{webp}',
-            'fonts/*',
-            'config.xml'
-          ]
+            expand: true,
+            cwd: '<%= targetDist %>',
+            dest: '<%= targetMin %>',
+            src: ['*.png']
         }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
-        }, {
-          expand: true,
-          cwd: '<%= yeoman.app %>/bower_components/worldstate-analysis-widgets/dist/images',
-          src: '*',
-          dest: '<%= yeoman.dist %>'
+            src: '<%= targetDist %>/config.xml',
+            dest: '<%= targetMin %>/config.xml'
         }]
-      },
-      styles: {
-        expand: true,
-        cwd: '<%= yeoman.app %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
-      }
-    },
+    };
 
-    // Run some tasks in parallel to speed up the build process
-    concurrent: {
-      server: [
-        'copy:styles'
-      ],
-      test: [
-        'copy:styles'
-      ],
-      dist: [
-        'copy:styles',
-        'imagemin',
-        'svgmin'
-      ]
-    },
-    // we do this since the grunt-google-cdn plugin is stale, quick and dirty
-    replace: {
-        cdnify: {
-            src: ['<%= yeoman.dist %>/index.html'],
-            dest: ['<%= yeoman.dist %>/index.html'],
-            replacements: [
-                {from: 'bower_components/bootstrap/dist/css/bootstrap.css', to: '//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css'},
-                {from: 'bower_components/jquery/dist/jquery.js', to: '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'},
-                {from: 'bower_components/angular/angular.js', to: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js'},
-                {from: 'bower_components/angular-resource/angular-resource.js', to: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js'},
-                // mixed opinion on this topic (replace bower dep with min on dist creation), but no solution
-                {from: 'bower_components/icmm_js/dist/scripts/icmm_js.js', to: 'bower_components/icmm_js/dist/scripts/icmm_js.min.js'},
-                {from: 'bower_components/worldstate-analysis-widgets/dist/scripts/worldstate-analysis-widget.js', to: 'bower_components/worldstate-analysis-widgets/dist/scripts/worldstate-analysis-widget.min.js'},
-                {from: 'bower_components/worldstate-analysis-widgets/dist/styles/worldstate-analysis-widget.css', to: 'bower_components/worldstate-analysis-widgets/dist/styles/worldstate-analysis-widget.min.css'},
-                {from: /<script src=('|")bower_components\/.+-tpl\.js('|")><\/script>/g, to: ''}
-            ]
-        },
-        // we would like to use uglify but its dead code removal won't find the debug statements as they don't use a 
-        // global var but an injected one, maybe reconsider debug config in the future
-        debugCode: {
-            // this is the concatenated file
-            src: ['.tmp/concat/scripts/worldstate-analysis-widgets-wirecloud.min.js'],
-            dest: ['.tmp/concat/scripts/worldstate-analysis-widgets-wirecloud.min.js'],
-            replacements: [
-                // unfortunately we cannot simply match opening { and count other opening { and then match the last closing one
-                // if this is needed some time in the future, we have to match everything and process the text in a to-function
-                // 
-                {from: /if\s*\(\s*DEBUG\s*\)\s*\{\s*console\s*\.\s*log\s*\(\s*('|").*\1??\s*\)\s*;?\s*\}/g, to: ''}
-            ]
-        },
-        incrementBuildNo: {
-            src: ['<%= yeoman.app %>/config.xml'],
-            dest: ['<%= yeoman.app %>/config.xml'],
-            replacements: [
-                { from: /\d+(?=\<\/Version>)/g, to: function (match) { return parseInt(match) + 1; } }
-            ]
-        }
-    },
-    echoMessage: {
-        message: 'REMEMBER TO UPDATE REPLACE AND CLEAN TASKS IF BOWER DEPS ARE CHANGED!'
-    },
-    compress: {
-        main: {
-         options: {
-                mode: 'zip',
-                archive: 'worldstate-analysis-widgets-wirecloud.min.wgt'
-         },
-         files: [
-                {expand: true, src: '**/*', cwd: 'dist'}
-         ]
-        },      
-        nomin: {
-         options: {
-                mode: 'zip',
-                archive: 'worldstate-analysis-widgets-wirecloud.wgt'
-         },
-         files: [
-                {expand: true, src: '**/*', cwd: 'app'}
-         ]
-        }
-    },
+    require('load-grunt-tasks')(grunt);
+    require('time-grunt')(grunt);
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care of
-    // minification. These next options are pre-configured if you do not wish
-    // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= yeoman.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-     uglify: {
-       options: {
+    grunt.initConfig({
+        /*
+         * ========================================================================================================
+         * ============================================= DEFAULTS =================================================
+         * ========================================================================================================
+         * 
+         *                         !do not change unless you are sure what you are doing!
+         */
+
+        projectName: require('./bower.json').name || grunt.fail.fatal('cannot find project name in bower.json'),
+        src: 'app',
+        dist: 'dist',
+        templates: '<%= src %>/templates',
+
+        test: 'test',
+        testSpec: '<%= test %>/spec',
+        testMock: '<%= test %>/mock',
+
+        target: 'target',
+        targetDist: '<%= target %>/dist',
+        targetMin: '<%= target %>/minDist',
+        targetConcat: '<%= target %>/concat',
+
+        directivesMainModuleName: directivesMainModuleName,
+
+
+        /*
+         * ========================================================================================================
+         * ============================================ TASK SECTION ==============================================
+         * ========================================================================================================
+         */
+
+        // user task for dist
         compress: {
-          global_defs: {
-            "DEBUG": false
-          },
-          dead_code: true
+            min: {
+                options: {
+                    mode: 'zip',
+                    archive: '<%= target %>/<%= projectName %>.min.wgt'
+                },
+                files: [
+                    {expand: true, src: '**/*', cwd: '<%= targetMin %>'}
+                ]
+            },
+            dist: {
+                options: {
+                    mode: 'zip',
+                    archive: '<%= target %>/<%= projectName %>.wgt'
+                },
+                files: [
+                    {expand: true, src: '**/*', cwd: '<%= targetDist %>'}
+                ]
+            }
+        },
+
+        // clean task
+        doclean: {
+            target: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= target %>/*'
+                    ]
+                }]
+            }
+        },
+        chmod: {
+            // NOTE: this is only for savety reasons, maybe we consider it unnecessary and slow
+            // chmod does not handle directories in globbing patterns well and how do we actually match only files -.-
+            read: {
+                options: {
+                    mode: '444'
+                },
+                src: [
+                    '<%= targetDist %>/**/*.js',
+                    '<%= targetDist %>/**/*.css',
+                    '<%= targetDist %>/**/*.html',
+                    '<%= targetDist %>/**/*.png',
+                    '<%= targetDist %>/**/*.gif',
+                    '<%= targetDist %>/**/*.svg',
+                    '<%= targetDist %>/**/*.js'
+                ]
+            },
+            write: {
+                options: {
+                    mode: '744'
+                },
+                src: [
+                    '<%= target %>/**/*.js',
+                    '<%= target %>/**/*.css',
+                    '<%= target %>/**/*.html',
+                    '<%= target %>/**/*.png',
+                    '<%= target %>/**/*.gif',
+                    '<%= target %>/**/*.svg',
+                    '<%= target %>/**/*.js'
+                ]
+            }
+        },
+
+        // validate task
+        bower: {
+            install: {
+                options: {
+                    cleanup: false,
+                    copy: false
+                }
+            }
+        },
+
+        // generateSources task
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            all: [
+                '<%= src %>/scripts/{,*/}*.js'
+            ]
+        },
+        sync: {
+            targetDist: {
+                files: [{
+                    cwd: '<%= src %>',
+                    src: ['**'],
+                    dest: '<%= targetDist %>'
+                }]
+            }
+        },
+        autoprefixer: {
+            options: ['last 1 version'],
+            gen_css: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= targetDist %>/styles/',
+                    src: '{,*/}*.css',
+                    dest: '<%= targetDist %>/styles/'
+                }]
+            }
+        },
+
+        // run task
+        connect: {
+            options: {
+                port: 9000,
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            serve: {
+                options: {
+                    open: true,
+                    base: [
+                        '<%= targetDist %>'
+                    ]
+                }
+            }
+        },
+        watch: {
+            livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
+                files: ['<%= src %>/**', '!<%= src %>/bower_components/**'],
+                tasks: ['build']
+            }
+        },
+
+        // several tasks
+        concurrent: {
+            concat: [
+                'concat_js',
+                'concat_css',
+                'ngtemplates:concat'
+            ],
+            min: [
+                'imagemin',
+                'svgmin',
+                'cssmin',
+                'uglify',
+                'htmlmin'
+            ]
+        },
+
+        // concat task
+        concat_js: {
+            js: {
+                src: [
+                    '<%= targetDist %>/scripts/**/*.js'],
+                dest: '<%= targetConcat %>/scripts/<%= projectName %>.js'
+            }
+        },
+        concat_css: {
+            css: {
+                src: ['<%= targetDist %>/styles/**/*.css'],
+                dest: '<%= targetConcat %>/styles/<%= projectName %>.css'
+            }
+        },
+
+        // prepareMin task
+        // ngAnnotate creates the initial min.js file
+        ngAnnotate: {
+            min: {
+                src: '<%= targetConcat %>/scripts/<%= projectName %>.js',
+                dest: '<%= targetMin %>/scripts/<%= projectName %>.min.js'
+            }
+        },
+        ngtemplates: {
+            min: {
+                options: {
+                    module: '<%= directivesMainModuleName %>',
+                    htmlmin: {
+                        removeComments: true,
+                        removeCommentsFromCDATA: true,
+                        collapseWhitespace: true,
+                        collapseBooleanAttributes: true,
+                        removeAttributeQuotes: true,
+                        removeRedundantAttributes: true,
+                        useShortDoctype: true,
+                        removeEmptyAttributes: true,
+                        removeOptionalTags: true
+                    },
+                    append: true
+                },
+                cwd: '<%= targetDist %>',
+                src: 'templates/**.html',
+                dest: '<%= targetMin %>/scripts/<%= projectName %>.min.js'
+            },
+            concat: {
+                options: {
+                    module: '<%= directivesMainModuleName %>'
+                },
+                cwd: '<%= targetDist %>',
+                src: 'templates/**.html',
+                dest: '<%= targetConcat %>/scripts/<%= projectName %>-tpl.js'
+            }
+        },
+        replace: {
+            // we would like to use uglify but its dead code removal won't find the debug statements as they don't use a 
+            // global var but an injected one, maybe reconsider debug config in the future
+            debugCode: {
+                // this is the concatenated file
+                src: ['<%= targetMin %>/scripts/<%= projectName %>.min.js'],
+                dest: ['<%= targetMin %>/scripts/<%= projectName %>.min.js'],
+                replacements: [
+                    // unfortunately we cannot simply match opening { and count other opening { and then match the last closing one
+                    // if this is needed some time in the future, we have to match everything and process the text in a to-function
+                    // 
+                    {from: /if\s*\(\s*DEBUG\s*\)\s*\{\s*console\s*\.\s*log\s*\(\s*('|").*\1??\s*\)\s*;?\s*\}/g, to: ''}
+                ]
+            },
+            // custom target
+            incrementBuildNo: {
+                src: ['<%= src %>/config.xml'],
+                dest: ['<%= src %>/config.xml'],
+                replacements: [
+                    { from: /\d+(?=\<\/Version>)/g, to: function (match) { return parseInt(match) + 1; } }
+                ]
+            }
+        },
+        copy: {
+            html: {
+                preserveTimestamp: true,
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= targetDist %>',
+                    dest: '<%= targetMin %>',
+                    src: ['index.html', 'views/*.html']
+                }]
+            },
+            custom: customCopy
+        },
+        cdnify: {
+            google: {
+                options: {
+                    cdn: require('google-cdn-data')
+                },
+                html: ['<%= targetMin %>/index.html']
+            },
+            cdn: {
+                options: {
+                    cdn: require('cdnjs-cdn-data')
+                },
+                html: ['<%= targetMin %>/index.html']
+            },
+            jsdelivr: {
+                options: {
+                    cdn: require('jsdelivr-cdn-data')
+                },
+                html: ['<%= targetMin %>/index.html']
+            },
+            custom: {
+                options: {
+                    cdn: {
+                        angular: {
+                            versions: ['1.2.25'],
+                            url: function (version) {
+                                return '//ajax.googleapis.com/ajax/libs/angularjs/' + version + '/angular.min.js';
+                            }
+                        },
+                        'angular-resource': {
+                            versions: ['1.2.25'],
+                            url: function (version) {
+                                return '//ajax.googleapis.com/ajax/libs/angularjs/' + version + '/angular-resource.min.js';
+                            }
+                        },
+                        bootstrap : {
+                            versions: ['3.3.0', '3.2.0', '3.1.1'],
+                            url: function (version) {
+                                return '//maxcdn.bootstrapcdn.com/bootstrap/' + version + '/js/bootstrap.min.js';
+                            }
+                        }
+                    }
+                },
+                html: ['<%= targetMin %>/index.html']
+            }
+        },
+        usemin: {
+            html: '<%= targetMin %>/index.html',
+            options: {
+                blockReplacements: {
+                    css: function (block) {
+                        return '<link rel="stylesheet" href="styles/' + grunt.config.get('projectName') + '.min.css">';
+                    },
+                    js: function (block) {
+                        return '<script src="scripts/' + grunt.config.get('projectName') + '.min.js"></script>';
+                    }
+                }
+            }
+        },
+
+        // min task
+        imagemin: {
+            min: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= targetDist %>/images',
+                    src: '{,*/}*.{png,jpg,jpeg}',
+                    dest: '<%= targetMin %>/images'
+                }]
+            }
+        },
+        svgmin: {
+            min: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= targetDist %>/images',
+                    src: '{,*/}*.svg',
+                    dest: '<%= targetMin %>/images'
+                }]
+            }
+        },
+        cssmin: {
+            min: {
+                src: '<%= targetConcat %>/styles/<%= projectName %>.css',
+                dest: '<%= targetMin %>/styles/<%= projectName %>.min.css'
+            }
+        },
+        uglify: {
+            options: {
+                mangle: true,
+                compress: true,
+                sourceMap: true
+            },
+            min: {
+                src: '<%= targetMin %>/scripts/<%= projectName %>.min.js',
+                dest: '<%= targetMin %>/scripts/<%= projectName %>.min.js'
+            }
+        },
+        htmlmin: {
+            min: {
+                options: {
+                    removeComments: true,
+                    removeCommentsFromCDATA: true,
+                    collapseWhitespace: true,
+                    collapseBooleanAttributes: true,
+                    removeAttributeQuotes: true,
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true,
+                    removeEmptyAttributes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    removeOptionalTags: true,
+                    removeIgnored: true,
+                    //lint: true,
+                    minifyJs: {
+                        mangle: true,
+                        compress: true,
+                        sourceMap: true
+                    },
+                    minifyCss: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= targetMin %>',
+                    src: ['*.html', 'views/*.html'],
+                    dest: '<%= targetMin %>'
+                }]
+            }
+        },
+
+        // test task
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js',
+                singleRun: true
+            }
         }
-      }
-     }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
-
-    // Test settings
-//    karma: {
-//      unit: {
-//        configFile: 'karma.conf.js',
-//        singleRun: true
-//      }
-//    }
-  });
+    });
 
 
-  grunt.registerTask('serve', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
-    }
+    /*
+     * =============================================================================================================
+     * ========================================== CUSTOM TASK SECTION ==============================================
+     * =============================================================================================================
+     * 
+     * helper tasks to accomplish the lifecycle
+     * 
+     */
 
-    grunt.task.run([
-      'clean:server',
-      'bower-install',
-      'concurrent:server',
-      'autoprefixer',
-      'connect:livereload',
-      'watch'
+    grunt.task.renameTask('clean', 'doclean');
+    grunt.task.renameTask('concat', 'concat_js');
+
+    /* 
+     * unfortunately we cannot access the task registry so we don't know what is actually queued and we don't know 
+     * which tasks actually configured the dependency so we have to force users to actively declare what task is the
+     * invoking task, resulting in something like this:
+     * 
+     * 'depend:<taskDependency>:<taskDependency>:...:<invokingTask>'
+     */
+    grunt.registerTask('depend', function () {
+        var doExecute, i, invokingTask, j, task;
+
+        if (!grunt.executedDependencies) {
+            grunt.executedDependencies = [];
+        }
+
+        if (arguments.length === 1) {
+            grunt.fail.fatal('invalid dependency configuration, did you provide the invoking task?');
+        }
+
+        invokingTask = arguments[arguments.length - 1];
+
+        if (!grunt.task.exists(invokingTask)) {
+            grunt.fail.fatal('invalid dependency configuration, the invoking task does not exist: ' + invokingTask);
+        }
+
+        grunt.executedDependencies.push(invokingTask);
+
+        for (i = 0; i < arguments.length - 1; ++i) {
+            task = arguments[i];
+
+            if (grunt.task.exists(task)) {
+                doExecute = true;
+
+                for (j = 0; j < grunt.executedDependencies.length; ++j) {
+                    if (task === grunt.executedDependencies[j]) {
+                        grunt.verbose.writeln('skipping task execution, already executed: ' + task);
+                        doExecute = false;
+                        break;
+                    }
+                }
+
+                if (doExecute) {
+                    grunt.verbose.writeln('executing dependency task: ' + task);
+                    grunt.task.run(task);
+                    grunt.executedDependencies.push(arguments[i]);
+                }
+            } else {
+                grunt.log.error('ignoring invalid task: ' + task);
+            }
+        }
+    });
+
+    /*
+     * cdnify does not support css (yet?) -.-
+     */
+    grunt.registerTask('cdnifyCss', function () {
+        var bowerJson, bootstrapVersion, indexhtml;
+
+        indexhtml = grunt.file.read('./' + grunt.config.get('targetMin') + '/index.html');
+        bowerJson = require('./bower.json');
+        if (bowerJson.dependencies) {
+            bootstrapVersion = bowerJson.dependencies.bootstrap;
+
+            if (bootstrapVersion) {
+                grunt.log.writeln('found bootstrap dependency, cdnify: ' + bootstrapVersion);
+                indexhtml = indexhtml.replace(
+                    /bower_components.+bootstrap(\.min)?\.css/,
+                    "//maxcdn.bootstrapcdn.com/bootstrap/" + bootstrapVersion + "/css/bootstrap.min.css"
+                );
+                grunt.file.write('./' + grunt.config.get('targetMin') + '/index.html', indexhtml);
+            } else {
+                grunt.log.writeln('Nothing to do');
+            }
+        }
+    });
+
+    /*
+     * cdnify may not know the versions already or has some other trouble so we copy the minified versions to the min 
+     * dist and update the index.html
+     */
+    grunt.registerTask('copyUncdnified', function () {
+        var copypath, indexhtml, match, minpath, path, regex;
+
+        indexhtml = grunt.file.read('./' + grunt.config.get('targetMin') + '/index.html');
+
+        regex = /="(bower_components\/.+)(\.js|\.css)"/g;
+        match = regex.exec(indexhtml);
+        
+        if (match === null) {
+            grunt.log.writeln('NICE, no uncdnified libraries');
+        } else {
+            grunt.log.writeln('found uncdnified libraries, copying to minified distribution');
+        }
+        
+        while (match !== null) {
+            path = match[1] + match[2];
+            minpath = match[1] + '.min' + match[2];
+            
+            if (grunt.file.exists(grunt.config.get('targetDist') + '/' + minpath)) {
+                copypath = minpath;
+            } else {
+                grunt.log.error('minified version not available, using regular one: ' + path);
+                copypath = path;
+            }
+            
+            grunt.verbose.writeln('copy ' + copypath + ' to minified distribution');
+            grunt.file.copy(
+                grunt.config.get('targetDist') + '/' + copypath, 
+                grunt.config.get('targetMin') + '/' + copypath);
+                
+            indexhtml = indexhtml.replace(path, copypath);
+            match = regex.exec(indexhtml);
+        }
+        
+        grunt.file.write('./' + grunt.config.get('targetMin') + '/index.html', indexhtml);
+    });
+    
+    grunt.registerTask('checkDependencies', function () {
+        var filename, lastCheck, now;
+        
+        filename = '.checkDependencies';
+        
+        if(!grunt.file.exists(filename)) {
+            grunt.file.write(filename, '{}');
+        }
+        
+        lastCheck = grunt.file.readJSON(filename).lastCheck;
+
+        if (lastCheck === undefined || lastCheck === null) {
+            lastCheck = 0;
+        }
+        
+        now = Date.now();
+        
+        if (now - lastCheck > 1000 * 60 * 60) {
+            grunt.log.writeln('last check over an hour ago, checking dependencies');
+            grunt.task.run(['npm-install', 'bower:install', 'updateInstallCheckTime:' + now + ':' + filename]);
+        } else {
+            grunt.log.writeln('last check less than an hour ago, skipping dependency check');
+        }
+    });
+    
+    grunt.registerTask('updateInstallCheckTime', function() {
+        grunt.file.write(arguments[1], JSON.stringify({lastCheck: Number(arguments[0])}));
+    });
+    
+    /*
+     * We match the scripts used in the index.html against the dependencies in bower.json. That way we make sure that
+     * every library that is actually needed is declared directly and is not only available due to transitive 
+     * dependencies.
+     */
+    grunt.registerTask('checkDirectDependencies', function () {
+        var dep, dependencies, found, indexhtml, match, regex;
+        
+        grunt.log.writeln('matching script usages of index.html against bower dependencies');
+
+        indexhtml = grunt.file.read(grunt.config.get('src') + '/index.html');
+        dependencies = require('./bower.json').dependencies;
+        
+        regex = /="(bower_components\/([\w-\.]+).+\.js)"/g;
+        match = regex.exec(indexhtml);
+        
+        while (match !== null) {
+            found = false;
+            for (dep in dependencies) {
+                if (dependencies.hasOwnProperty(dep) && match[2] === dep) {
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (found) {
+                grunt.verbose.writeln('found direct dependency: ' + match[2]);
+            } else {
+                grunt.fail.warn('Did not find direct dependency "' + match[2] + '" in bower.json!\n'
+                        + 'It is highly recommended that you declare a dependency '
+                        + 'for every library that you use in your index.html!');
+            }
+            
+            match = regex.exec(indexhtml);
+        }
+    });
+    
+    /*
+     * sync karma conf with index.html
+     */
+    grunt.registerTask('updateKarmaConfAndRun', function () {
+        var htmlFiles, indexhtml, jsFiles, karmaconf, match, regex, sep, specFiles, testFiles;
+        
+        specFiles = grunt.file.expand(grunt.config.get('testSpec') + '/**/*.js');
+        
+        if (specFiles.length === 0) {
+            grunt.log.writeln('no test files available, skipping tests');
+            
+            return true;
+        }
+        
+        grunt.log.writeln("found " + specFiles.length + " spec files");
+        
+        indexhtml = grunt.file.read(grunt.config.get('targetDist') + '/index.html');
+        
+        regex = /<script src="(.*\.js)">/g;
+        match = regex.exec(indexhtml);
+        
+        jsFiles = [];
+        while (match !== null) {
+            jsFiles.push(grunt.config.get('targetDist') + '/' + match[1]);
+            match = regex.exec(indexhtml);
+        }
+        
+        htmlFiles = grunt.file.expand(grunt.config.get('templates') + '/**/*.html');
+        
+        sep = "',\n        '";
+        testFiles = "    files: [\n        '" 
+                + jsFiles.join(sep)
+                + sep
+                + grunt.config.get('targetDist') + '/bower_components/angular-mocks/angular-mocks.js'
+                + sep
+                + htmlFiles.join(sep);
+        
+        if (specFiles.length > 0) {
+            testFiles = testFiles
+                    + sep
+                    + specFiles.join(sep);
+        }
+        
+        testFiles = testFiles + "'\n    ]";
+        
+        grunt.verbose.writeln('created files entry:\n' + testFiles);
+        
+        karmaconf = grunt.file.read('karma.conf.js');
+        karmaconf = karmaconf.replace(/ *files:\s*\[([\s\S]*?)\]/, testFiles);
+        grunt.file.write('karma.conf.js', karmaconf);
+        
+        grunt.task.run('karma');
+    });
+
+    grunt.registerTask('bowerDist', function() {
+        var absDist, absSrc, files, fs, gruntDir, i, statDist, statSrc;
+        
+        gruntDir = process.cwd();
+        
+        try {
+            grunt.log.writeln('copying generated files to dist');
+            
+            fs = require('fs');
+            absDist = gruntDir + '/' + grunt.config.get('dist');
+            absSrc = gruntDir + '/' + grunt.config.get('src');
+
+            grunt.file.setBase(grunt.config.get('targetConcat'));
+
+            files = grunt.file.expand('./**/*.*');
+            for(i = 0; i < files.length; ++i) {
+                grunt.file.copy(files[i], absDist + '/' + files[i]);
+            }
+
+            grunt.file.setBase(gruntDir + '/' + grunt.config.get('targetDist'));
+
+            files = grunt.file.expand({cwd: absSrc}, 'images/**/*.*');
+            for(i = 0; i < files.length; ++i) {
+                statSrc  = fs.statSync(absSrc + '/' + files[i]);
+                if(grunt.file.exists(absDist + '/' + files[i])) {
+                    statDist = fs.statSync(absDist + '/' + files[i]);
+                } else {
+                    statDist = {mtime: new Date(0)};
+                }
+
+                if(statSrc.mtime.getTime() === statDist.mtime.getTime()) {
+                    grunt.verbose.writeln('image not modified: ' + files[i]);
+                } else {
+                    grunt.log.writeln('found modified image, copying: ' + files[i]);
+
+                    grunt.file.copy(files[i], absDist + '/' + files[i]);
+                    fs.utimesSync(absDist + '/' + files[i], statSrc.atime, statSrc.mtime);
+                }
+            }
+            
+            grunt.file.setBase(gruntDir + '/' + grunt.config.get('targetMin'));
+            files = grunt.file.expand(['scripts/*', 'styles/*']);
+            for(i = 0; i < files.length; ++i) {
+                grunt.file.copy(files[i], absDist + '/' + files[i]);
+            }
+        } finally {
+            grunt.file.setBase(gruntDir);
+        }
+    });
+
+    grunt.registerTask('concat', [
+        'depend:build:concat',
+        'concurrent:concat'
     ]);
-  });
+    
+    grunt.registerTask('prepareMin', [
+       'depend:concat:prepareMin',
+       'ngAnnotate',
+       'ngtemplates:min',
+       'replace:debugCode',
+       'copy',
+       'cdnify',
+       'cdnifyCss',
+       'copyUncdnified',
+       'usemin'
+    ]);
+    
+    grunt.registerTask('min', [
+       'depend:prepareMin:min',
+       'concurrent:min'
+    ]);
+    
+    /*
+     * ================================================== LIFECYCLE ===============================================
+     * 
+     * default:
+     * - validate
+     * - generateSources
+     * - test
+     * - build
+     * - package
+     * - dist
+     * 
+     */
 
-  grunt.registerTask('server', function () {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve']);
-  });
+    grunt.registerTask('default', [
+        'dist'
+    ]);
+    
+    grunt.registerTask('validate', [
+        'checkDependencies',
+        'checkDirectDependencies',
+        'chmod:write'
+    ]);
+    
+    grunt.registerTask('generateSources', [
+        'depend:validate:generateSources',
+        'jshint',
+        'replace:incrementBuildNo',
+        'sync:targetDist',
+        'autoprefixer'
+    ]);
 
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma'
-  ]);
-
-  grunt.registerTask('build', [
-    'clean:dist',
-    // does not work satisfactory
-//    'bower-install',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
-    'replace:incrementBuildNo',
-    'copy:dist',
-//    'cdnify',
-    'replace:cdnify',
-    'clean:deploy',
-    'replace:debugCode',
-//    'cssmin',
-    'uglify',
-//    'rev',
-    'usemin',
-    'htmlmin',
-    'compress',
-    'echoMessage'
-  ]);
-
-  grunt.registerTask('default', [
-    'newer:jshint',
-//    'test',
-    'build'
-  ]);
+    grunt.registerTask('test', [
+        'depend:generateSources:test',
+        'updateKarmaConfAndRun'
+    ]);
+    
+    grunt.registerTask('build', [
+        'depend:test:build',
+        'chmod:read'
+    ]);
+    
+    grunt.registerTask('package', [
+       'depend:build:package',
+       'concat',
+       'prepareMin',
+       'min',
+       'copy:custom'
+    ]);
+    
+    grunt.registerTask('dist', [
+        'depend:package:dist',
+        'bowerDist',
+        'compress'
+    ]);
+    
+    /*
+     * ================================================== LIFECYCLE ===============================================
+     * 
+     * run/serve:
+     * - validate
+     * - generateSources
+     * - test
+     * - build
+     * - run
+     * 
+     */
+    
+    grunt.registerTask('serve', [
+        'depend:build:serve',
+        'connect:serve',
+        'watch'
+    ]);
+    
+    grunt.registerTask('run', ['serve']);
+    
+    /*
+     * ================================================== LIFECYCLE ===============================================
+     * 
+     * clean:
+     * - validate
+     * - clean
+     * 
+     */
+    
+    grunt.registerTask('clean', [
+        'depend:validate:clean',
+        'doclean:target'
+    ]);
 };

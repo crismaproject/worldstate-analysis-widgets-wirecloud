@@ -1,4 +1,4 @@
-worldstate-analysis-widgets-wirecloud
+worldstate-analysis-widgets-wirecloud [![Build Status](http://ci.cismet.de/buildStatus/icon?job=worldstate-analysis-widgets-wirecloud)](https://ci.cismet.de/view/html5%20javascript/job/worldstate-analysis-widgets-wirecloud/)
 =====================================
 
 Wrapper of the [Worldstate Analysis Widgets (AngularJS)](https://github.com/crismaproject/worldstate-analysis-widgets) to make them available on WireCloud.
